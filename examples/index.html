@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Suparo examples</title>
+    </head>
+    <body>
+        <h1>Suparo examples</h1>
+        <p>This is examples page of Suparo testing library. Check out a browser console to see results</p>
+    
+        <script type="text/javascript" src="../src/suparo.js"></script>
+        <script type="text/javascript">
+        
+        given('Basic functions', function (context) {
+            context.number = 3; //Let's declare and assign a variable
+            
+            when('I add 3 and 5', function (context) {
+                context.result = 3 + 5;
+            })
+            .then('It should equal to 8', function (context) {
+                context.equality(context.result, 8);
+            });
+        });
+    
+        given('Basic math operations', function (context) {
+            context.two = 2;
+            
+            when('I add 2 and 2 and multiply 2 and 2', function (context) {
+                context.add = 2 + 2;
+                context.multiply = 2 * 2;
+            })
+            .then('It should both equal to 4', function (context) {
+                context.equality(context.add, context.multiply, 4); //number two is so magical, isn't it?
+            });
+        });
+        
+        given('Show the possibility of comparing more than two values', function (ctx) {
+            ctx.first = 1;
+            ctx.third = 3;
+            ctx.eleventh = 11;
+            ctx.fifteenth = 15;
+            
+            when('You can pass more than two arguments into Suparo tests')
+            .then('In this case I appoint it right', function (ctx) {
+                ctx.leftLower(ctx.first, ctx.third, ctx.eleventh, ctx.fifteenth);
+            });
+            
+            when('If you do not believe me I can prove it')
+            .then('In this case I make mistake purposely (it should fail)', function (ctx) {
+                ctx.leftLower(ctx.first, ctx.third, ctx.fifteenth, ctx.eleventh);
+            });
+        });
+            
+        </script>
+    </body>
+</html>
