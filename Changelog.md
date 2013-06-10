@@ -11,5 +11,6 @@ Public API
 * leftGreater(params)
 * leftLower(params)
 * propertyOfFirst(params)
+* valueOwnedByFirst(params)
 * equalityOneOfThese(params)
 * nonEqualityOneOfThese(params)

@@ -45,7 +45,7 @@ given('Basic math operations', function (context) {
 
 See results in a browser console. And that's all! Suparo is very simple. If you don't any special requirements, it is here at your service.
 
-Want to see more examples? Ok, check out this!
+Want to see more examples? Ok, check this out!
 
 ```javascript
 given('Show the possibility of comparing more than two values', function (ctx) {
@@ -62,6 +62,41 @@ given('Show the possibility of comparing more than two values', function (ctx) {
     when('If you do not believe me I can prove it')
     .then('In this case I make mistake purposely (it should fail)', function (ctx) {
         ctx.leftLower(ctx.first, ctx.third, ctx.fifteenth, ctx.eleventh);
+    });
+});
+```
+
+But not always have to be used AND logic in comparers. We can try if our value is equal to (or anything else) one of followedarguments.
+
+```javascript
+given('Use OR logic to compare values', function () {    
+    when('I save only one value from several', function (ctx) {
+        ctx.random = Math.floor(Math.random() * 3); //number between 0 and 3
+        ctx.array = [ 'Frodo', 'Sam', 'Merry', 'Pippin' ]; //array of four values
+        ctx.chosen = ctx.array[ctx.random]; //choose random person
+    })
+    .then('And the test should be passed anyway', function (ctx) {
+        ctx.equalityOneOfThese(ctx.chosen, ctx.array[0], ctx.array[1], ctx.array[2], ctx.array[3]);
+    });
+});
+```
+
+And finally, we can do some tests on objects.
+
+```javascript
+given('Do some tests on objects', function () {    
+    when('Define a person object', function (ctx) {
+        ctx.person = { name : 'Gandalf the White', occupation : 'wizard' }
+    })
+    .then('And check if it contains a specific property', function (ctx) {
+        ctx.propertyOfFirst(ctx.person, 'name');
+    });
+    
+    when('Add some another value into the person object - the same context is accessible in whole given scope', function (ctx) {
+        ctx.person.order = 'Istari';
+    })
+    .then('And check if it contains a specific property', function (ctx) {
+        ctx.valueOwnedByFirst(ctx.person, 'Istari');
     });
 });
 ```
