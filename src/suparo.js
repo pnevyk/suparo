@@ -97,55 +97,91 @@
      */
     var allowTestMethods = function () {
         //public API        
-        context.nonEquality = nonEquality;
+        context.inEquality = inEquality;
         context.equality = equality;
         context.leftGreater = leftGreater;
         context.leftLower = leftLower;
         context.propertyOfFirst = propertyOfFirst;
         context.valueOwnedByFirst = valueOwnedByFirst;
         context.equalityOneOfThese = equalityOneOfThese;
-        context.nonEqualityOneOfThese = nonEqualityOneOfThese;
+        context.inEqualityOneOfThese = inEqualityOneOfThese;
     };
     
+    /**
+     * Private function for converting boolean value to string representation of a result
+     * @param {boolean} value Boolean value
+     * 
+     * @returns {string} String representation of boolean value
+     */
     var boolToOutput = function (value) {
         return (value) ? 'Passed' : 'Failed';
     };
     
+    /**
+     * Private function for converting Arguments object to array
+     * @param {arguments} args Arguments object
+     * 
+     * @returns {array} Array which contains values of Arguments object
+     */
     var argsToArray = function (args) {
         if (args.length < 2) { return []; } //it can be compared only more than two arguements
         return Array.prototype.slice.call(args);
     };
     
+    /**
+     * Function which tests equality between given arguments
+     * @param {*[]} parameters Arguments to test
+     */
     var equality = function () {        
         this[outputKey] = iterateAnd(argsToArray(arguments), function (param1, param2) {
             return param1 === param2;
         });
     };
     
-    var nonEquality = function () {        
+    /**
+     * Function which tests inequality between given arguments
+     * @param {*[]} parameters Arguments to test
+     */
+    var inEquality = function () {        
         this[outputKey] = iterateAnd(argsToArray(arguments), function (param1, param2) {
             return param1 !== param2;
         });
     };
     
+    /**
+     * Function which tests that left arguments are greater than right
+     * @param {*[]} parameters Arguments to test
+     */
     var leftGreater = function () {        
         this[outputKey] = iterateAnd(argsToArray(arguments), function (param1, param2) {
             return param1 > param2;
         });
     };
     
+    /**
+     * Function which tests that left arguments are lower than right
+     * @param {*[]} parameters Arguments to test
+     */
     var leftLower = function () {        
         this[outputKey] = iterateAnd(argsToArray(arguments), function (param1, param2) {
             return param1 < param2;
         });
     };
     
+    /**
+     * Function which checks if given arguments are properties of first
+     * @param {*[]} parameters Arguments to test
+     */
     var propertyOfFirst = function () {        
         this[outputKey] = iterateAnd(argsToArray(arguments), function (param1, param2, firstParam) {
             return firstParam.hasOwnProperty(param2);
         });
     };
     
+    /**
+     * Function which checks if given arguments are values of first
+     * @param {*[]} parameters Arguments to test
+     */
     var valueOwnedByFirst = function () {        
         this[outputKey] = iterateAnd(argsToArray(arguments), function (param1, param2, firstParam) {
             for (var prop in firstParam) {
@@ -158,13 +194,21 @@
         });
     };
     
+    /**
+     * Function which tests equality between given arguments using OR logic
+     * @param {*[]} parameters Arguments to test
+     */
     var equalityOneOfThese = function () {
         this[outputKey] = iterateOr(argsToArray(arguments), function (param1, param2) {
             return param1 === param2;
         });
     };
     
-    var nonEqualityOneOfThese = function () {
+    /**
+     * Function which tests inequality between given arguments using OR logic
+     * @param {*[]} parameters Arguments to test
+     */
+    var inEqualityOneOfThese = function () {
         this[outputKey] = iterateOr(argsToArray(arguments), function (param1, param2) {
             return param1 !== param2;
         });
