@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Suparo examples</title>
+        <title>Suparo.js examples</title>
     </head>
     <body>
         <h1>Suparo examples</h1>
         <p>This is examples page of Suparo testing library. Open a browser console to see results.</p>
     
-        <script type="text/javascript" src="../src/suparo.js"></script>
+        <script type="text/javascript" src="../src/suparo.min.js"></script>
         <script type="text/javascript">
         
         given('Basic functions', function (context) {
             context.number = 3; //Let's declare and assign a variable
             
-            when('I add 3 and 5', function (context) {
+            when('I add 3 and 5', function () {
                 context.result = 3 + 5;
             })
-            .then('It should equal to 8', function (context) {
+            .then('It should equal to 8', function () {
                 context.equality(context.result, 8);
+                return context;
             });
         });
     
         given('Basic math operations', function (context) {
             context.two = 2;
             
-            when('I add 2 and 2 and multiply 2 and 2', function (context) {
+            when('I add 2 and 2 and multiply 2 and 2', function () {
                 context.add = 2 + 2;
                 context.multiply = 2 * 2;
             })
-            .then('It should both equal to 4', function (context) {
-                context.equality(context.add, context.multiply, 4); //number two is so magical, isn't it?
+            .then('It should both equal to 4', function () {
+                return context.equality(context.add, context.multiply, 4); //number two is so magical, isn't it?
             });
         });
         
@@ -40,42 +41,53 @@
             ctx.fifteenth = 15;
             
             when('You can pass more than two arguments into Suparo tests')
-            .then('In this case I appoint it right', function (ctx) {
+            .then('In this case I appoint it right', function () {
                 ctx.leftLower(ctx.first, ctx.third, ctx.eleventh, ctx.fifteenth);
+                return ctx;
             });
             
             when('If you do not believe me I can prove it')
-            .then('In this case I make mistake purposely (it should fail)', function (ctx) {
+            .then('In this case I make mistake purposely (it should fail)', function () {
                 ctx.leftLower(ctx.first, ctx.third, ctx.fifteenth, ctx.eleventh);
-            });
-        });
-        
-        given('Use OR logic to compare values', function () {    
-            when('We save only one value from several', function (ctx) {
-                ctx.random = Math.floor(Math.random() * 3); //number between 0 and 3
-                ctx.array = [ 'Peter', 'Sue', 'Joey', 'Monica' ]; //array of four values
-                ctx.chosen = ctx.array[ctx.random]; //choose random person
-            })
-            .then('And the test should be passed anyway', function (ctx) {
-                ctx.equalityOneOfThese(ctx.chosen, ctx.array[0], ctx.array[1], ctx.array[2], ctx.array[3]);
-            });
-        });
-        
-        given('Do some tests on objects', function () {    
-            when('Define a person object', function (ctx) {
-                ctx.person = { name : 'Gandalf the White', occupation : 'wizard' }
-            })
-            .then('And check if it contains a specific property', function (ctx) {
-                ctx.propertyOfFirst(ctx.person, 'name');
+                return ctx;
             });
             
-            when('Add some another value into the person object - the same context is accessible in whole given scope', function (ctx) {
-                ctx.person.order = 'Istari';
+            summarize(ctx);
+        });
+        
+        given('Use OR logic to compare values', function (ctx) {    
+            when('We save only one value from several', function () {
+                ctx.random = Math.floor(Math.random() * 3); //number between 0 and 3
+                ctx.array = [ 'Frodo', 'Sam', 'Merry', 'Pippin' ]; //array of four values
+                ctx.chosen = ctx.array[ctx.random]; //choose random person
             })
-            .then('And check if it contains a specific property', function (ctx) {
-                ctx.valueOwnedByFirst(ctx.person, 'Istari');
+            .then('And the test should be passed anyway', function () {
+                ctx.equalityOneOfThese(ctx.chosen, ctx.array[0], ctx.array[1], ctx.array[2], ctx.array[3]);
+                return ctx;
             });
         });
+        
+        given('Do some tests on objects', function (ctx) {    
+            when('Define a person object', function () {
+                ctx.person = { name : 'Gandalf the White', occupation : 'wizard' };
+            })
+            .then('And check if it contains a specific property', function () {
+                ctx.propertyOfFirst(ctx.person, 'name');
+                return ctx;
+            });
+            
+            when('Add some another value into the person object - the same context is accessible in whole given scope', function () {
+                ctx.person.order = 'Istari';
+            })
+            .then('And check if it contains a specific property', function () {
+                ctx.valueOwnedByFirst(ctx.person, 'Istari');
+                return ctx;
+            });
+            
+            summarize(ctx);
+        });
+        
+        summarize();
             
         </script>
     </body>
